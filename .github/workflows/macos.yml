@@ -14,11 +14,13 @@ env:
 jobs:
   build:
     runs-on: macos-latest
+    name: macos-latest-${{ matrix.ssl }}-shared-${{ matrix.shared }}
 
     strategy:
       fail-fast: false
       matrix:
         build: [nossl, ssl]
+        shared: [ON, OFF]
         include:
         - build: nossl
           extra_cmake_flags: -DWITH_OPENSSL=OFF
@@ -35,7 +37,7 @@ jobs:
       run: brew install cmake ${{matrix.extra_install}}
 
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON ${{matrix.extra_cmake_flags}}
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON ${{matrix.extra_cmake_flags}} -DBUILD_SHARED_LIBS=${{ matrix.shared }}
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target all

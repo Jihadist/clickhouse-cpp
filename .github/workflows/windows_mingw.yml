@@ -33,10 +33,12 @@ env:
 jobs:
   build:
     runs-on: windows-latest
+    name: windows-mingw-latest-shared-${{ matrix.shared }}
 
     strategy:
       fail-fast: false
       matrix:
+        shared: [ON, OFF]
         include:
           - { sys: mingw64, env: x86_64 }
           - { sys: ucrt64,  env: ucrt-x86_64 }  # Experimental!
@@ -63,7 +65,7 @@ jobs:
           tar
 
     - name: Configure CMake
-      run: cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON
+      run: cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DBUILD_TESTS=ON -DBUILD_SHARED_LIBS=${{ matrix.shared }}
       # -DWITH_OPENSSL=ON was not able to make it work (some strange issues with CA paths, need debug)
 
     - name: Build
