@@ -29,6 +29,8 @@ PROJECT (CLICKHOUSE-CLIENT)
     INCLUDE_DIRECTORIES (.)
     INCLUDE_DIRECTORIES (contrib)
 
+    SET (CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+
     SUBDIRS (
         clickhouse
         contrib/absl
