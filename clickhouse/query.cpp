@@ -2,7 +2,6 @@
 
 namespace clickhouse {
 
-const std::string Query::default_query_id = {};
 
 Query::Query()
 { }
